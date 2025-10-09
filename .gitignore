@@ -1,0 +1,10 @@
+# Compilados / ejecutables
+/build/
+*.exe
+*.out
+*.o
+*.obj
+
+# Configuración de VS Code
+.vscode/
+*.log
