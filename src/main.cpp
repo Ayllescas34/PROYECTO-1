@@ -38,7 +38,7 @@ int main() {
                 if (s.integridad > 100) s.integridad = 100;
                 break;
         	case 3:
-        		cout << "Enviando se�ales al espacio...\n";
+        		cout << "Enviando senales al espacio...\n";
                 break;
         	case 4:
                 cout << "Te has rendido. Fin del viaje.\n";
