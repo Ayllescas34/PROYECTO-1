@@ -149,7 +149,7 @@ void eventosAleatorios() {
                 cout << "Son amistosos! Recibiste 20 unidades de combustible." << endl;
             } else {
                 integridad -=10;
-                cout << "Son hostiles! Daño en la nave: -10% de integridad" << endl;
+                cout << "Son hostiles! dano en la nave: -10% de integridad" << endl;
             }
          
         //meteoritos       
@@ -177,10 +177,10 @@ void eventosAleatorios() {
                 cout << "Maniobras exitosas! Gastaste " << combustibleGastado << "unidades de combustible" << endl;
                 
             }else {
-                //impacto, daño entre 15 y 25
-                int daño = 15 + rand () % 11;
-                integridad -= daño;
-                cout << "Impacto recibido! La nave sufrio daño de " << daño << "% de daño" << endl;
+                //impacto, dano entre 15 y 25
+                int dano = 15 + rand () % 11;
+                integridad -= dano;
+                cout << "Impacto recibido! La nave sufrio dano de " << dano << "% de dano" << endl;
             }
 
         }    
