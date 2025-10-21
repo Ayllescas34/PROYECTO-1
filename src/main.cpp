@@ -7,6 +7,7 @@ using namespace std;
 
 // Declaracion de la funcion
 void explorar();
+void eventosAleatorios();
 
 int combustible = 30;
 int oxigeno = 50;
@@ -57,6 +58,8 @@ int main() {
             default:
                 cout << "Opcion invalida.\n";
         }
+
+        eventosAleatorios();
 
         if (combustible <= 0 || integridad <= 0 || oxigeno <= 0) {
             cout << "\nGame Over: Se acabo todo, sin recursos/ nave destruida";
@@ -110,4 +113,77 @@ void explorar() {
     if (integridad < 0) integridad = 0;
 
     cout << "La exploracion ha terminado por hoy.\n";
+}
+
+void eventosAleatorios() {
+    //consumo de recursos
+    oxigeno -= 20;
+    suministros -=30;
+    cout << "Consumo de recursos: -20 de oxigeno, -30 de suministros" << endl;
+
+    //evento aleatorio con 15% de probabilidad
+    int probabilidad = rand() % 100;
+
+    //condicion para qeu toque evento en primer dia
+    if (dia == 1) {
+        probabilidad = 0;
+    }
+
+    if (probabilidad < 15) {
+        cout << "\nALERTA: EVENTO NOCTURNO" << endl;
+
+        int tipoevento = rand() % 3;
+        //tormenta cosmica
+        if (tipoevento == 0) {
+            cout << "Tormenta cosmica" << endl; 
+            oxigeno -= 10;
+            cout << "Oxigeno reducido en 10 unidades." << endl;
+        
+        //encuentro alienigena    
+        } else if (tipoevento == 1) {
+            cout << "Encuentro alienigena" << endl;
+
+            int tipoalien = rand() % 2;
+            if (tipoalien == 0) {
+                combustible += 20;
+                cout << "Son amistosos! Recibiste 20 unidades de combustible." << endl;
+            } else {
+                integridad -=10;
+                cout << "Son hostiles! dano en la nave: -10% de integridad" << endl;
+            }
+         
+        //meteoritos       
+        } else {
+            cout << "Meteoritos" << endl;
+
+            int decision = 0;
+
+            while (decision != 1 && decision !=2) {
+                cout << "Que deseas hacer?" << endl;
+                cout << "1. Maniobrar (perderas combustible)" << endl;
+                cout << "2. Recibir el impacto (se dañara la nave)" << endl;
+                cout << "Elige una opcion: ";
+                cin >> decision;
+
+                if (decision != 1 && decision != 2) {
+                    cout << "\nOpcion invalida. Selecciona 1 o 2.\n" << endl;
+                }
+            }
+
+            if (decision == 1) {
+                //maniobrar, gasto entre 10 y 30
+                int combustibleGastado = 10 + rand() % 21;
+                combustible -= combustibleGastado;
+                cout << "Maniobras exitosas! Gastaste " << combustibleGastado << "unidades de combustible" << endl;
+                
+            }else {
+                //impacto, dano entre 15 y 25
+                int dano = 15 + rand () % 11;
+                integridad -= dano;
+                cout << "Impacto recibido! La nave sufrio dano de " << dano << "% de dano" << endl;
+            }
+
+        }    
+    } 
+    cout << "\nLa noche ha terminado.\n";
 }
