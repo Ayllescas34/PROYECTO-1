@@ -2,14 +2,15 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
-#include "../include/resources.h"   // si no lo usas, puedes comentarlo
+#include "../include/resources.h"
 // #include "../include/actions.h"
 
 using namespace std;
 
-// ====== Prototipos ======
+// inicializamos los metodos
 void explorar();
 void reparar();
+void enviarSenales();
 void eventosAleatorios();
 
 // ====== Variables globales ======
@@ -25,19 +26,23 @@ int main() {
     bool estasJugando = true;
     string nombreCapitan;
 
+//iniciamos el juego, pedimos el nombre del capitan
     cout << "=== Simulador de Viaje Espacial ===" << endl;
     cout << "Hola, bienvenido al juego, ingresa tu nombre capitan: ";
     cin >> nombreCapitan;
 
+//validamos que el dia sea hasta 10 ya que en 10gana el juego
     while (estasJugando && dia <= 10) {
         cout << "\nHola Capitan " << nombreCapitan << endl;
 
+//mostramos los valores iniciales
         cout << "\n=== Dia #" << dia << "===" << endl;
         cout << "Combustible: " << combustible << endl;
         cout << "Oxigeno: "     << oxigeno     << endl;
         cout << "Suministros: " << suministros << endl;
         cout << "Integridad: "  << integridad  << "%" << endl;
 
+//preguntamos que accion desea realizar
         cout << "\nQue deseas hacer" << endl;
         cout << "1) Explorar un planeta cercano." << endl;
         cout << "2) Reparar la nave." << endl;
@@ -54,7 +59,7 @@ int main() {
                 reparar();
                 break;
             case 3:
-                cout << "Enviar señaes pronto";
+                enviarSenales();
                 break;
             case 4:
                 cout << "Te has rendido. Fin del viaje.\n";
@@ -64,10 +69,10 @@ int main() {
                 cout << "Opcion invalida.\n";
         }
 
-        // Evento nocturno y consumos
+        // Evento nocturno 
         eventosAleatorios();
 
-        // Chequeo de fin de juego por recursos/estado
+        // Chequeo de fin de juego por recursos
         if (combustible <= 0 || oxigeno <= 0 || suministros <= 0 || integridad <= 0) {
             cout << "\nGame Over: ";
             if (combustible <= 0) cout << "Sin combustible. ";
@@ -90,7 +95,7 @@ int main() {
     return 0;
 }
 
-// ====== Implementaciones ======
+// ====== servicios ======
 
 void explorar() {
     cout << "\nExplorando planeta cercano..." << endl;
@@ -164,6 +169,28 @@ void reparar() {
     }
 }
 
+void enviarSenales() {
+    cout << "\nEnviando senales al espacio..." << endl;
+
+    // 50% ayuda, 50% piratas
+    int evento = rand() % 2;
+
+    if (evento == 0) {
+        // Ayuda
+        combustible += 60;
+        cout << "Recibiste ayuda de una nave amiga: +60 combustible." << endl;
+    } else {
+        // Piratas
+        integridad -= 15;
+        suministros -= 20;
+
+        // Limites para no negativos
+        if (integridad  < 0) integridad  = 0;
+        if (suministros < 0) suministros = 0;
+
+        cout << "Piratas espaciales! -15% integridad y -20 suministros." << endl;
+    }
+}
 
 void eventosAleatorios() {
     // Consumo de recursos al final del dia
@@ -239,7 +266,7 @@ void eventosAleatorios() {
         }
     }
 
-    // Limites finales por si acaso
+    // Limites finales 
     if (combustible < 0) combustible = 0;
     if (oxigeno     < 0) oxigeno     = 0;
     if (suministros < 0) suministros = 0;
