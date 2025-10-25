@@ -2,7 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
-#include "../include/resources.h"
+#include <limits> // NECESARIO para limpiar el buffer de cin de forma segura
+#include "../include/resources.h"    // si no lo usas, puedes comentarlo
 // #include "../include/actions.h"
 
 using namespace std;
@@ -12,6 +13,7 @@ void explorar();
 void reparar();
 void enviarSenales();
 void eventosAleatorios();
+void modoHacker();
 
 // ====== Variables globales ======
 int combustible = 30;
@@ -61,9 +63,13 @@ int main() {
             case 3:
                 enviarSenales();
                 break;
-            case 4:
-                cout << "Te has rendido. Fin del viaje.\n";
-                estasJugando = false;
+            case 99: // Â¡OPCIÃ“N SECRETA HACKER!
+                modoHacker();
+                // Pausa extra para ver el resultado de la acciÃ³n del truco
+                cout << "\nPresiona ENTER para continuar...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cin.get();
+                 continue; 
                 break;
             default:
                 cout << "Opcion invalida.\n";
@@ -275,3 +281,60 @@ void eventosAleatorios() {
     cout << "\nLa noche ha terminado.\n";
 }
 
+void modoHacker() {
+    int valor;
+    
+    cout << "\n========================================" << endl;
+    cout << "=== MODO TRUCOS ACTIVADO (CODIGO 99) ===" << endl;
+    cout << "========================================" << endl;
+    
+    // NOTA: Se evita la limpieza de cin para mantener el estilo "principiante"
+
+    // === Combustible ===
+    cout << "Combustible actual: " << combustible << ". Ingresa nuevo valor: ";
+    cin >> valor;
+    
+    if (valor <= 0) {
+        cout << "Valor no valido. Combustible se mantiene en: " << combustible << endl;
+    } else {
+        combustible = valor;
+    }
+    
+    // === Oxígeno ===
+    cout << "Oxigeno actual: " << oxigeno << ". Ingresa nuevo valor: ";
+    cin >> valor;
+    
+    if (valor <= 0) {
+        cout << "Valor no valido. Oxigeno se mantiene en: " << oxigeno << endl;
+    } else {
+        oxigeno = valor;
+    }
+
+    // === Suministros ===
+    cout << "Suministros actuales: " << suministros << ". Ingresa nuevo valor: ";
+    cin >> valor;
+    
+    if (valor <= 0) {
+        cout << "Valor no valido. Suministros se mantiene en: " << suministros << endl;
+    } else {
+        suministros = valor;
+    }
+
+    // === Integridad (0 a 100) ===
+    // La integridad es un caso especial, sí puede ser 0
+    cout << "Integridad actual: " << integridad << "%. Ingresa nuevo valor (0 a 100): ";
+    cin >> valor;
+    
+    if (valor < 0) {
+        integridad = 0;
+    } else if (valor > 100) {
+        integridad = 100;
+    } else {
+        integridad = valor;
+    }
+    
+    cout << "\n¡Recursos cambiados! ¡Volviendo al juego, Capitan!\n";
+    
+    // Dejamos la limpieza de errores básica.
+    cin.clear();
+}
