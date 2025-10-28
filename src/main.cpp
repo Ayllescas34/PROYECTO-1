@@ -59,10 +59,14 @@ int main() {
                 cout << "Opcion invalida.\n";
         }
 
+        if (!estasJugando) {
+            break;
+        }
+
         eventosAleatorios();
 
-        if (combustible <= 0 || integridad <= 0 || oxigeno <= 0) {
-            cout << "\nGame Over: Se acabo todo, sin recursos/ nave destruida";
+        if (combustible <= 0 || integridad <= 0 || oxigeno <= 0 || suministros <= 0) {
+            cout << "\nGAME OVER: Te has quedado sin recursos o la nave fue destruida.\n";
             break;
         }
 
