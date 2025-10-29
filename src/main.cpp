@@ -11,6 +11,7 @@ using namespace std;
 void explorar();
 void eventosAleatorios();
 void repararNave ();
+void modoHacker();
 
 int combustible = 30;
 int oxigeno = 50;
@@ -51,6 +52,7 @@ int main() {
 
     // --- Ciclo principal del juego ---
     while (estasJugando && dia <= 10) {
+        bool hackerActivado = false; //usamos la bandera para ver lo de modo hacker
         limpiarPantalla(); // Limpia pantalla al inicio de cada día
         cout << "\n========================================" << endl;
         cout << "      === Simulador de Viaje Espacial ===" << endl;
@@ -92,6 +94,12 @@ int main() {
                 cout << "Te has rendido. Fin del viaje.\n";
                 estasJugando = false;
                 break;
+            case 99:
+                modoHacker();
+                this_thread::sleep_for(chrono::milliseconds(3000));
+                limpiarPantalla();
+                hackerActivado = true;
+                break;
             default:
                 cout << "Opcion invalida.\n";
                 this_thread::sleep_for(chrono::milliseconds(3000));
@@ -101,16 +109,18 @@ int main() {
             break;
         }
 
-        eventosAleatorios();
-        this_thread::sleep_for(chrono::milliseconds(3000)); // Pausa tras eventos nocturnos
+        // Solo ejecuta eventos y avanza el día si NO fue modo hacker
+        if (!hackerActivado) {
+            eventosAleatorios();
+            this_thread::sleep_for(chrono::milliseconds(3000));
 
-        if (combustible <= 0 || integridad <= 0 || oxigeno <= 0 || suministros <= 0) {
-            cout << "\nGAME OVER: Te has quedado sin recursos o la nave fue destruida.\n";
-            break;
+            if (combustible <= 0 || integridad <= 0 || oxigeno <= 0 || suministros <= 0) {
+                cout << "\nGAME OVER: Te has quedado sin recursos o la nave fue destruida.\n";
+                break;
+            }
+
+            dia++; // Solo avanza el día si no fue modo hacker
         }
-
-        // Avanzamos un dia
-        dia++;
     }
 
     if (dia > 10)
@@ -265,4 +275,63 @@ void repararNave () {
         cout<<"Suministros restantes: "<<suministros<<endl;
         cout<<"Integridad actual: " << integridad << "%" << endl;
     }
+}
+
+
+void modoHacker() {
+    int valor;
+    
+    cout << "\n========================================" << endl;
+    cout << "=== MODO TRUCOS ACTIVADO (CODIGO 99) ===" << endl;
+    cout << "========================================" << endl;
+    
+    // NOTA: Se evita la limpieza de cin para mantener el estilo "principiante"
+
+    // === Combustible ===
+    cout << "Combustible actual: " << combustible << ". Ingresa nuevo valor: ";
+    cin >> valor;
+    
+    if (valor <= 0) {
+        cout << "Valor no valido. Combustible se mantiene en: " << combustible << endl;
+    } else {
+        combustible = valor;
+    }
+    
+    // === Oxígeno ===
+    cout << "Oxigeno actual: " << oxigeno << ". Ingresa nuevo valor: ";
+    cin >> valor;
+    
+    if (valor <= 0) {
+        cout << "Valor no valido. Oxigeno se mantiene en: " << oxigeno << endl;
+    } else {
+        oxigeno = valor;
+    }
+
+    // === Suministros ===
+    cout << "Suministros actuales: " << suministros << ". Ingresa nuevo valor: ";
+    cin >> valor;
+    
+    if (valor <= 0) {
+        cout << "Valor no valido. Suministros se mantiene en: " << suministros << endl;
+    } else {
+        suministros = valor;
+    }
+
+    // === Integridad (0 a 100) ===
+    // La integridad es un caso especial, sí puede ser 0
+    cout << "Integridad actual: " << integridad << "%. Ingresa nuevo valor (0 a 100): ";
+    cin >> valor;
+    
+    if (valor < 0) {
+        integridad = 0;
+    } else if (valor > 100) {
+        integridad = 100;
+    } else {
+        integridad = valor;
+    }
+    
+    cout << "\n¡Recursos cambiados! ¡Volviendo al juego, Capitan!\n";
+    
+    // Dejamos la limpieza de errores básica.
+    cin.clear();
 }
