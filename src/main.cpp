@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include "../include/resources.h"
@@ -8,6 +9,7 @@ using namespace std;
 // Declaracion de la funcion
 void explorar();
 void eventosAleatorios();
+void repararNave ();
 
 int combustible = 30;
 int oxigeno = 50;
@@ -43,10 +45,8 @@ int main() {
                 explorar();
                 break;
             case 2:
-                cout << "Intentas reparar la nave... (-10 suministros, +5% integridad)\n";
-                suministros -= 10;
-                integridad += 5;
-                if (integridad > 100) integridad = 100;
+                //cout << "Intentas reparar la nave...\n";
+                repararNave();
                 break;
             case 3:
                 cout << "Enviando senales al espacio...\n";
@@ -120,15 +120,24 @@ void explorar() {
 }
 
 void eventosAleatorios() {
-    //consumo de recursos
+    // Mostrar recursos antes del consumo
+    cout << "\n--- Consumo nocturno de recursos ---" << endl;
+    cout << "Recursos antes de la noche:" << endl;
+    cout << "Oxigeno: " << oxigeno << ", Suministros: " << suministros << endl;
+
+    // Consumo nocturno
     oxigeno -= 20;
-    suministros -=30;
+    suministros -= 30;
+
+    // Mostrar recursos después del consumo
     cout << "Consumo de recursos: -20 de oxigeno, -30 de suministros" << endl;
+    cout << "Recursos después de la noche:" << endl;
+    cout << "Oxigeno: " << oxigeno << ", Suministros: " << suministros << endl;
 
     //evento aleatorio con 15% de probabilidad
     int probabilidad = rand() % 100;
 
-    //condicion para qeu toque evento en primer dia
+    //condicion para que toque evento en primer dia
     if (dia == 1) {
         probabilidad = 0;
     }
@@ -178,7 +187,7 @@ void eventosAleatorios() {
                 //maniobrar, gasto entre 10 y 30
                 int combustibleGastado = 10 + rand() % 21;
                 combustible -= combustibleGastado;
-                cout << "Maniobras exitosas! Gastaste " << combustibleGastado << "unidades de combustible" << endl;
+                cout << "Maniobras exitosas! Gastaste " << combustibleGastado << " unidades de combustible" << endl;
                 
             }else {
                 //impacto, dano entre 15 y 25
@@ -190,4 +199,51 @@ void eventosAleatorios() {
         }    
     } 
     cout << "\nLa noche ha terminado.\n";
+}
+
+void repararNave () {
+                
+    int porcentajeReparar; //ingreso de Variables
+    int suministrosNecesarios;
+                
+    //Condicional para límitar la reparación de la nave
+    if (integridad == 100) {
+        cout<<"¡Ups!, todo parece estar en orden. Intentalo nuevamente mas tarde"<<endl;
+	} else {
+			
+		//Aviso sobre suministros insuficientes		
+		if (suministros == 0) {
+            cout<<"Suministros agotados. No puedes reparar la nave. "<<endl;
+		} else {
+			
+			//Reparando la nave
+			do {
+                cout<<"Que porcentaje deseas reparar?: "; 
+				cin>>porcentajeReparar;
+					
+					if (porcentajeReparar < 0 || porcentajeReparar > 100){
+						cout <<"¡Error!, el porcentaje a reparar debe estar entre 0 y 100. Intente nuevamente"<<endl;
+						continue;
+					}
+						
+					suministrosNecesarios = porcentajeReparar * 10;
+					
+						//Limitacíon de suministros
+						if (suministrosNecesarios > suministros) {
+							cout<<"No tienes suficientes suministros. Necesitas "<<suministrosNecesarios<<" pero solo tienes "<<suministros<<endl;
+							continue;
+						} 
+				
+						break;
+						}
+						//Validación de bucle
+						while(true);
+					
+						suministros -= suministrosNecesarios;
+							
+							cout<<"Se reparara el "<<porcentajeReparar<<"% de la nave usando "<< suministrosNecesarios<<" unidades de suministros.\n";
+							cout<<"Suministros restantes: "<<suministros<<endl;
+						} 
+					
+					}
 }
