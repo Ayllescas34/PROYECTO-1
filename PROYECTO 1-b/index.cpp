@@ -57,9 +57,9 @@ int main() {
     while (estasJugando && dia <= 10) {
         bool hackerActivado = false; //usamos la bandera para ver lo de modo hacker
         limpiarPantalla(); // Limpia pantalla al inicio de cada día
-        cout << "\n========================================" << endl;
+        cout << "\n==================================================" << endl;
         cout << "      === Simulador de Viaje Espacial ===" << endl;
-        cout << "========================================\n" << endl;
+        cout << "==================================================" << endl;
         cout << "\nHola Capitan " << nombreCapitan << endl;
 
         // Mostramos los valores iniciales
