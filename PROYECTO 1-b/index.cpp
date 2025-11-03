@@ -56,6 +56,7 @@ int main() {
     // --- Ciclo principal del juego ---
     while (estasJugando && dia <= 10) {
         bool hackerActivado = false; //usamos la bandera para ver lo de modo hacker
+        bool opcionValida = true; //usamos bandera para vlidar opcion
         limpiarPantalla(); // Limpia pantalla al inicio de cada día
         cout << "\n==================================================" << endl;
         cout << "      === Simulador de Viaje Espacial ===" << endl;
@@ -78,42 +79,52 @@ int main() {
         cout << "Elige una opcion: ";
         cin >> opcion;
 
-        animacionCarga(3000); // Animación de carga tras elegir opción
+        // validar si cin fallo, en caso que usario ingrese letras
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout <<"\nOpcion invalida. Ingrese un numero.\n";
+            this_thread::sleep_for(chrono::milliseconds(2000));
+            opcionValida = false;
+        } else {
+            animacionCarga(3000); // Animación de carga tras elegir opción
 
-        switch(opcion){
-            case 1:
-                explorar();
-                this_thread::sleep_for(chrono::milliseconds(3000)); // Pausa tras explorar
-                break;
-            case 2:
-                repararNave();
-                this_thread::sleep_for(chrono::milliseconds(3000)); // Pausa tras reparar
-                break;
-            case 3:
-                enviarSenales();
-                this_thread::sleep_for(chrono::milliseconds(3000)); // Pausa tras enviar señales
-                break;
-            case 4:
-                cout << "Te has rendido. Fin del viaje.\n";
-                estasJugando = false;
-                break;
-            case 99:
-                modoHacker();
-                this_thread::sleep_for(chrono::milliseconds(3000));
-                limpiarPantalla();
-                hackerActivado = true;
-                break;
-            default:
-                cout << "Opcion invalida.\n";
-                this_thread::sleep_for(chrono::milliseconds(3000));
-        }
-
+            switch(opcion){
+                case 1:
+                    explorar();
+                    this_thread::sleep_for(chrono::milliseconds(3000)); // Pausa tras explorar
+                    break;
+                case 2:
+                    repararNave();
+                    this_thread::sleep_for(chrono::milliseconds(3000)); // Pausa tras reparar
+                    break;
+                case 3:
+                    enviarSenales();
+                    this_thread::sleep_for(chrono::milliseconds(3000)); // Pausa tras enviar señales
+                    break;
+                case 4:
+                    cout << "Te has rendido. Fin del viaje.\n";
+                    estasJugando = false;
+                    break;
+                case 99:
+                    modoHacker();
+                    this_thread::sleep_for(chrono::milliseconds(3000));
+                    limpiarPantalla();
+                    hackerActivado = true;
+                    break;
+                default:
+                    cout << "Opcion invalida. Por favor elige 1,2,3 o 4\n";
+                    this_thread::sleep_for(chrono::milliseconds(3000));
+                    opcionValida = false; //marca como valida
+            }
+        } 
+            
         if (!estasJugando) {
             break;
         }
 
-        // Solo ejecuta eventos y avanza el día si NO fue modo hacker
-        if (!hackerActivado) {
+        // Solo ejecuta eventos y avanza el día si NO fue modo hacker y la opcion fue valida
+        if (!hackerActivado && opcionValida) { //ARREGLO
             eventosAleatorios();
             this_thread::sleep_for(chrono::milliseconds(3000));
 
@@ -230,7 +241,12 @@ void eventosAleatorios() {
                 cout << "Elige una opcion: ";
                 cin >> decision;
 
-                if (decision != 1 && decision != 2) {
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "\nOpcion invalida, ingresa un numero 1 o 2.\n" << endl;
+                    decision = 0;
+                } else if (decision != 1 && decision != 2) {
                     cout << "\nOpcion invalida. Selecciona 1 o 2.\n" << endl;
                 }
             }
