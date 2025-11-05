@@ -285,22 +285,29 @@ void repararNave () {
         cout<<"Suministros agotados. No puedes reparar la nave. "<<endl;
     } else {
         do {
-            cout<<"Que porcentaje deseas reparar?: "; 
-            cin>>porcentajeReparar;
+            cout << "Que porcentaje deseas reparar?: ";
+            cin >> porcentajeReparar;
 
-            if (porcentajeReparar < 0 || porcentajeReparar > 100){
-                cout <<"¡Error!, el porcentaje a reparar debe estar entre 0 y 100. Intente nuevamente"<<endl;
+            if (cin.fail()) {
+                cout << "¡Error! Ingresa un número entero entre 0 y 100." << endl;
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+                continue;
+            }
+
+            if (porcentajeReparar < 0 || porcentajeReparar > 100) {
+                cout << "¡Error!, el porcentaje a reparar debe estar entre 0 y 100. Intente nuevamente" << endl;
                 continue;
             }
 
             suministrosNecesarios = porcentajeReparar * 10;
 
             if (suministrosNecesarios > suministros) {
-                cout<<"No tienes suficientes suministros. Necesitas "<<suministrosNecesarios<<" pero solo tienes "<<suministros<<endl;
+                cout << "No tienes suficientes suministros. Necesitas " << suministrosNecesarios << " pero solo tienes " << suministros << endl;
                 continue;
-            } 
+            }
             break;
-        } while(true);
+        } while (true);
 
         suministros -= suministrosNecesarios;
         integridad += porcentajeReparar;
